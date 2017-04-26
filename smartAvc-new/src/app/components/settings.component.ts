@@ -24,7 +24,10 @@ export class SettingsComponent implements OnInit {
     user: any;
     admin = false;
     categories = [];
+    categories_cost = [];
     category_keys = [];
+    subcategories = [];
+    subcategory_keys = [];
     category_name = "";
     subcategory_name = "";
     selected_cat: any;
@@ -46,7 +49,7 @@ export class SettingsComponent implements OnInit {
         var uid = this.user.uid;
 
         firebase.database().ref('/subscribers/' + uid).on('value', (user) => {
-            if(user.val().role == 'admin'){
+            if (user.val().role == 'admin') {
                 this.admin = true;
             }
         })
@@ -55,13 +58,15 @@ export class SettingsComponent implements OnInit {
     changeCost() {
         var c = this.cost;
         var n = this.category_name;
+        var s = this.subcategory_name;
 
-        var ref = firebase.database().ref('/categories/');
-        ref.orderByChild('name').equalTo(this.category_name).on('child_added', function (snapshot) {
-            firebase.database().ref('/categories/' + snapshot.key).set({
-                cost: c,
-                name: n
-            })
+        var ref = firebase.database().ref('/categories_cost/');
+        ref.orderByChild('type').equalTo(this.category_name).on('child_added', function (snapshot) {
+            if (snapshot.val().category == s) {
+                firebase.database().ref('/categories_cost/' + snapshot.key).update({
+                    cost: c
+                })
+            }
         })
 
         this.cost = 0;
@@ -72,18 +77,42 @@ export class SettingsComponent implements OnInit {
     getCategories() {
         var c = [];
         var category_keys = [];
+        var s = [];
+        var subcategory_keys = [];
         firebase.database().ref('/categories/').on('child_added', function (snapshot) {
             c.push(snapshot.val());
             category_keys.push(snapshot.key)
         })
+
+        firebase.database().ref('/categories_cost/').on('child_added', function (snapshot) {
+            s.push(snapshot.val());
+            subcategory_keys.push(snapshot.key)
+        })
         this.categories = c;
-        this.category_keys = category_keys
+        this.category_keys = category_keys;
+        this.subcategories = s;
+        this.subcategory_keys = subcategory_keys;
     }
 
     deleteCategory(id) {
+        var name;
+        firebase.database().ref('/categories/' + this.category_keys[id]).on('value', (snapshot) => {
+            name = snapshot.val().name;
+            firebase.database().ref('/categories_cost')
+                .orderByChild('type')
+                .equalTo(name)
+                .on('child_added', (snap) => {
+                    if (snap.val().type == name) {
+                        firebase.database().ref('/categories_cost/' + snap.key).remove()
+                    }
+                })
+        })
 
-        firebase.database().ref('/categories/' + this.category_keys[id]).remove();
-
+        firebase.database().ref('/categories/' + this.category_keys[id])
+            .remove();
+        this.category_name = "";
+        this.subcategory_name = "";
+        this.new_category_name = ""
         this.getCategories();
     }
 
@@ -100,6 +129,19 @@ export class SettingsComponent implements OnInit {
             'name': this.new_category_name,
             'cost': 0
         })
+
+        var cat = ['A', 'B', 'C', 'D', 'E'];
+
+        for (let i = 0; i < cat.length; i++) {
+            firebase.database().ref('/categories_cost/').push({
+                'type': this.new_category_name,
+                'category': cat[i],
+                'cost': 0
+
+            })
+        }
+
+        this.new_category_name = "";
         this.add_trigger = false;
         this.getCategories();
     }
@@ -124,7 +166,22 @@ export class SettingsComponent implements OnInit {
 
     confirmDelete() {
         var id = this.selected_cat;
-        firebase.database().ref('/categories/' + this.category_keys[id]).remove();
+        var cat_id = this.category_keys[id];
+        var name = "";
+        firebase.database().ref('/categories/' + cat_id).on('value', (snapshot) => {
+            name = snapshot.val().name;
+            firebase.database().ref('/categories_cost')
+                .on('child_added', (snap) => {
+                    if (snap.val().type == name) {
+                        firebase.database().ref('/categories_cost/' + snap.key).remove()
+                    }
+                })
+            firebase.database()
+                .ref('/categories/' + cat_id)
+                .remove();
+        })
+
+
         this.popup.hide();
         this.getCategories();
     }

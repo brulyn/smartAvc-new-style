@@ -26,6 +26,7 @@ declare var firebase: any;
 })
 
 export class FarmersComponent implements OnInit {
+    loaded = false;
     user: any;
     admin = false;
     user_collection_center: any;
@@ -75,10 +76,10 @@ export class FarmersComponent implements OnInit {
     }
 
     ngOnInit() {
-
+        this.getUserInfo();
         this.fbGetData();
         this.getCategories();
-        this.getUserInfo();
+        
     }
 
     province_change() {
@@ -390,6 +391,8 @@ export class FarmersComponent implements OnInit {
             if(user.val().role == 'admin'){
                 this.admin = true;
             }
+
+            this.loaded = true
         })
     }
 

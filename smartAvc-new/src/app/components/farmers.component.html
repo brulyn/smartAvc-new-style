@@ -1,14 +1,21 @@
 <div class="container body">
-  <popup (confirmClick)="confirmDelete()">
-    The farmer will be deleted. Are you sure?
-  </popup>
-  <div class="main_container">
+
+  <div class='uil-ripple-css' *ngIf="!loaded" style='transform:scale(0.97);'>
+    <div>
+    </div>
+    <div>
+    </div>
+  </div>
+  <div class="main_container" *ngIf="loaded">
     <app-side-menu></app-side-menu>
 
     <div class="right_col" role="main">
       <div class="">
         <div class="row">
           <div class="col-md-12 col-sm-12 col-xs-12">
+            <popup (confirmClick)="confirmDelete()">
+              The farmer will be deleted. Are you sure?
+            </popup>
             <button class="btn btn-info btn-xs" *ngIf="!create_farmer && !update_farmer && !admin" (click)="create()"> <span class="fa fa-plus"></span> Add New Farmer</button>
             <button class="btn btn-warning btn-xs" *ngIf="create_farmer || update_farmer" (click)="cancelCreate()"> <span class="fa fa-times"></span> Cancel</button>
 
@@ -196,9 +203,11 @@
       </div>
     </div>
     <!-- /page content -->
+
+    <!-- footer content -->
+    <app-footer></app-footer>
+    <!-- /footer content -->
   </div>
 
-  <!-- footer content -->
-  <app-footer></app-footer>
-  <!-- /footer content -->
+
 </div>

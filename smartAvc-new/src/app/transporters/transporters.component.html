@@ -1,9 +1,7 @@
 <div class="container body">
-  <popup (confirmClick)="confirmDelete()">
-    The transporter will be deleted. Are you sure?
-  </popup>
+
   <div class="main_container">
-    <app-top-menu></app-top-menu>
+
     <app-side-menu></app-side-menu>
 
     <div class="right_col" role="main">
@@ -11,6 +9,9 @@
 
         <div class="row">
           <div class="col-md-12 col-sm-12 col-xs-12">
+            <popup (confirmClick)="confirmDelete()">
+              The transporter will be deleted. Are you sure?
+            </popup>
             <button class="btn btn-info btn-xs" *ngIf="!create_transporter && !update_transporter" (click)="create()"> <span class="fa fa-plus"></span> Add New Transporter</button>
             <button class="btn btn-warning btn-xs" *ngIf="create_transporter || update_transporter" (click)="cancelCreate()"> <span class="fa fa-times"></span> Cancel</button>
 
@@ -23,29 +24,33 @@
                       <label for="first_name">First Name</label>
                       <input type="text" class="form-control" id="first_name" [formControl]="transporterForm.controls['first_name']" [(ngModel)]="transporter.first_name"
                         name="first_name" placeholder="FirstName">
-                      <div *ngIf="transporterForm.controls['first_name'].hasError('required') && transporterForm.controls['first_name'].touched" class="alert alert-danger">You must include a first name.</div>
+                      <div *ngIf="transporterForm.controls['first_name'].hasError('required') && transporterForm.controls['first_name'].touched"
+                        class="alert alert-danger">You must include a first name.</div>
                     </div>
 
                     <div class="form-group" [ngClass]="{'has-error':!transporterForm.controls['last_name'].valid && transporterForm.controls['last_name'].touched}">
                       <label for="last_name">Last Name</label>
                       <input type="text" class="form-control" id="last_name" [formControl]="transporterForm.controls['last_name']" [(ngModel)]="transporter.last_name"
                         name="last_name" placeholder="LastName">
-                      <div *ngIf="transporterForm.controls['last_name'].hasError('required') && transporterForm.controls['last_name'].touched" class="alert alert-danger">You must include a last name.</div>
+                      <div *ngIf="transporterForm.controls['last_name'].hasError('required') && transporterForm.controls['last_name'].touched"
+                        class="alert alert-danger">You must include a last name.</div>
                     </div>
 
                     <div class="form-group" [ngClass]="{'has-error':!transporterForm.controls['national_id'].valid && transporterForm.controls['national_id'].touched}">
                       <label for="national_id">National ID</label>
                       <input type="text" class="form-control" id="national_id" [formControl]="transporterForm.controls['national_id']" [(ngModel)]="transporter.national_id"
                         name="national_id" placeholder="1 1989 8 00023 9023 90 01">
-                      <div *ngIf="transporterForm.controls['national_id'].hasError('required') && transporterForm.controls['national_id'].touched" class="alert alert-danger">You must include a National ID.</div>
-                      <div *ngIf="transporterForm.controls['national_id'].hasError('minlength') && transporterForm.controls['national_id'].touched" class="alert alert-danger">The length can't be less than 16.</div>
+                      <div *ngIf="transporterForm.controls['national_id'].hasError('required') && transporterForm.controls['national_id'].touched"
+                        class="alert alert-danger">You must include a National ID.</div>
+                      <div *ngIf="transporterForm.controls['national_id'].hasError('minlength') && transporterForm.controls['national_id'].touched"
+                        class="alert alert-danger">The length can't be less than 16.</div>
 
                     </div>
 
                     <div class="form-group">
                       <label for="phone_Number_mtn">Phone number (MTN)</label>
-                      <input type="text" class="form-control" id="phone_Number_mtn" [formControl]="transporterForm.controls['phone_Number_mtn']" [(ngModel)]="transporter.phone_number_mtn"
-                        name="phone_Number_mtn" placeholder="078...">
+                      <input type="text" class="form-control" id="phone_Number_mtn" [formControl]="transporterForm.controls['phone_Number_mtn']"
+                        [(ngModel)]="transporter.phone_number_mtn" name="phone_Number_mtn" placeholder="078...">
                     </div>
 
                     <div class="form-group">
@@ -56,8 +61,8 @@
 
                     <div class="form-group">
                       <label for="phone_Number_tigo">Phone number (TIGO)</label>
-                      <input type="text" class="form-control" id="phone_Number_tigo" [formControl]="transporterForm.controls['phone_Number_tigo']" [(ngModel)]="transporter.phone_number_tigo"
-                        name="phone_Number_tigo" placeholder="072...">
+                      <input type="text" class="form-control" id="phone_Number_tigo" [formControl]="transporterForm.controls['phone_Number_tigo']"
+                        [(ngModel)]="transporter.phone_number_tigo" name="phone_Number_tigo" placeholder="072...">
                     </div>
 
                     <div class="row">
@@ -105,14 +110,16 @@
 
                     <div class="form-group" [ngClass]="{'has-error':!transporterForm.controls['age'].valid && transporterForm.controls['age'].touched}">
                       <label for="age">Age</label>
-                      <input type="text" class="form-control" id="age" [formControl]="transporterForm.controls['age']" [(ngModel)]="transporter.age" name="age">
+                      <input type="text" class="form-control" id="age" [formControl]="transporterForm.controls['age']" [(ngModel)]="transporter.age"
+                        name="age">
                       <div *ngIf="transporterForm.controls['age'].hasError('required') && transporterForm.controls['age'].touched" class="alert alert-danger">You must include the age of this transporter.</div>
                       <div *ngIf="transporterForm.controls['age'].hasError('maxlength') && transporterForm.controls['age'].touched" class="alert alert-danger">The length can't be more than 2.</div>
                     </div>
 
                     <div class="form-group">
                       <label for="married">Married</label>
-                      <select class="form-control" name="married" [formControl]="transporterForm.controls['married']" [(ngModel)]="transporter.married" id="married">
+                      <select class="form-control" name="married" [formControl]="transporterForm.controls['married']" [(ngModel)]="transporter.married"
+                        id="married">
                     <option value="Yes">Yes</option>
                     <option value="No">No</option>                    
                   </select>
@@ -136,7 +143,7 @@
                   <tbody>
                     <tr *ngFor=" let transporter of transporters; let i= index; trackBy: trackByIndex">
                       <td>{{ transporter.first_name }} {{ transporter.last_name }}</td>
-                     
+
                       <td>
                         <div *ngIf="!transporter.updating_stock">
                           {{ transporter.stock }} Kg - <strong>{{ transporter.category }} {{ transporter.subcategory }}</strong>
