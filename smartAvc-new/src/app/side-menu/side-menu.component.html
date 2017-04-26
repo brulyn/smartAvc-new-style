@@ -1,0 +1,55 @@
+<nav class="navbar navbar-default">
+  <div class="container-fluid">
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1"
+        aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="#">Smart Avc</a>
+    </div>
+
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      <ul class="nav navbar-nav navbar-right">
+        <li routerLinkActive="active"><a routerLink="/farmers"><i class="fa fa-user"></i> Farmers</a>
+        </li>
+
+        <li routerLinkActive="active" *ngIf="admin"><a routerLink="/coll"><i class="fa fa-university"></i> Collection Centers</a>
+        </li>
+        <!-- 
+                    <li routerLinkActive="active"><a routerLink="/cooperatives"><i class="fa fa-users"></i> Cooperatives</a>
+                    </li>               
+              -->
+        <li routerLinkActive="active"><a routerLink="/transporters"><i class="fa fa-truck"></i> Transporters</a>
+        </li>
+
+        <li routerLinkActive="active"><a routerLink="/stock"><i class="fa fa-building"></i> Stock</a>
+        </li>
+
+        <li routerLinkActive="active"><a routerLink="/settings"><i class="fa fa-cogs"></i> Settings</a>
+        </li>
+
+        <li routerLinkActive="active"><a routerLink="/profile"><i class="fa fa-pencil"></i> Profile</a>
+        </li>
+
+        <li>
+          <a (click)="logout()"> <i class="fa fa-sign-out"></i> Logout</a>
+        </li>
+      </ul>
+
+    </div>
+    <!-- /.navbar-collapse -->
+  </div>
+  <!-- /.container-fluid -->
+</nav>
+
+
+
+
+
+
+

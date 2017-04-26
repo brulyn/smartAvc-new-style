@@ -1,0 +1,213 @@
+<div class="container body">
+  <popup (confirmClick)="confirmDelete()">
+    The farmer will be deleted. Are you sure?
+  </popup>
+  <div class="main_container">
+    <app-side-menu></app-side-menu>
+
+    <div class="right_col" role="main">
+      <div class="">
+        <div class="page-title">
+          <div class="title_left">
+            <h3>Farmers</h3>
+          </div>
+
+        </div>
+
+        <div class="clearfix"></div>
+
+        <div class="row">
+          <div class="col-md-12 col-sm-12 col-xs-12">
+            <button class="btn btn-info btn-xs" *ngIf="!create_farmer && !update_farmer && !admin" (click)="create()"> <span class="fa fa-plus"></span> Add New Farmer</button>
+            <button class="btn btn-warning btn-xs" *ngIf="create_farmer || update_farmer" (click)="cancelCreate()"> <span class="fa fa-times"></span> Cancel</button>
+
+            <div class="x_panel">
+              <!-- FROM FOR SAVING NEW FARMER DETAILS-->
+              <div *ngIf="create_farmer || update_farmer">
+                <form [formGroup]="farmerForm" (ngSubmit)="fbPostData(farmerForm.value)">
+                  <div class="col-md-6">
+                    <div class="form-group" [ngClass]="{'has-error':!farmerForm.controls['first_name'].valid && farmerForm.controls['first_name'].touched}">
+                      <label for="first_name">First Name</label>
+                      <input type="text" class="form-control" id="first_name" [formControl]="farmerForm.controls['first_name']" [(ngModel)]="farmer.first_name"
+                        name="first_name" placeholder="FirstName">
+                      <div *ngIf="farmerForm.controls['first_name'].hasError('required') && farmerForm.controls['first_name'].touched" class="alert alert-danger">You must include a first name.</div>
+                    </div>
+
+                    <div class="form-group" [ngClass]="{'has-error':!farmerForm.controls['last_name'].valid && farmerForm.controls['last_name'].touched}">
+                      <label for="last_name">Last Name</label>
+                      <input type="text" class="form-control" id="last_name" [formControl]="farmerForm.controls['last_name']" [(ngModel)]="farmer.last_name"
+                        name="last_name" placeholder="LastName">
+                      <div *ngIf="farmerForm.controls['last_name'].hasError('required') && farmerForm.controls['last_name'].touched" class="alert alert-danger">You must include a last name.</div>
+                    </div>
+
+                    <div class="form-group" [ngClass]="{'has-error':!farmerForm.controls['national_id'].valid && farmerForm.controls['national_id'].touched}">
+                      <label for="national_id">National ID</label>
+                      <input type="text" class="form-control" id="national_id" [formControl]="farmerForm.controls['national_id']" [(ngModel)]="farmer.national_id"
+                        name="national_id" placeholder="1 1989 8 00023 9023 90 01">
+                      <div *ngIf="farmerForm.controls['national_id'].hasError('required') && farmerForm.controls['national_id'].touched" class="alert alert-danger">You must include a National ID.</div>
+                      <div *ngIf="farmerForm.controls['national_id'].hasError('minlength') && farmerForm.controls['national_id'].touched" class="alert alert-danger">The length can't be less than 16.</div>
+
+                    </div>
+
+                    <div class="form-group">
+                      <label for="phone_Number_mtn">Phone number (MTN)</label>
+                      <input type="text" class="form-control" id="phone_Number_mtn" [formControl]="farmerForm.controls['phone_Number_mtn']" [(ngModel)]="farmer.phone_number_mtn"
+                        name="phone_Number_mtn" placeholder="078...">
+                    </div>
+
+                    <div class="form-group">
+                      <label for="phone_Number_airtel">Phone number (AIRTEL)</label>
+                      <input type="text" class="form-control" id="phone_Number_airtel" [formControl]="farmerForm.controls['phone_Number_airtel']"
+                        [(ngModel)]="farmer.phone_number_airtel" name="phone_Number_airtel" placeholder="073...">
+                    </div>
+
+                    <div class="form-group">
+                      <label for="phone_Number_tigo">Phone number (TIGO)</label>
+                      <input type="text" class="form-control" id="phone_Number_tigo" [formControl]="farmerForm.controls['phone_Number_tigo']" [(ngModel)]="farmer.phone_number_tigo"
+                        name="phone_Number_tigo" placeholder="072...">
+                    </div>
+
+                    <div class="form-group" [ngClass]="{'has-error':!farmerForm.controls['farm_width'].valid && farmerForm.controls['farm_width'].touched}">
+                      <label for="farm_width">Farm Width (ha)</label>
+                      <input type="number" class="form-control" id="farm_width" [formControl]="farmerForm.controls['farm_width']" [(ngModel)]="farmer.farm_width"
+                        name="farm_width">
+                      <div *ngIf="farmerForm.controls['farm_width'].hasError('required') && farmerForm.controls['farm_width'].touched" class="alert alert-danger">You must include the farm width.</div>
+                    </div>
+
+                    <div class="row">
+                      <div class="form-group col-md-6">
+                        <button type="submit" class="btn btn-info btn-xs" [disabled]="!farmerForm.valid"> Done</button>
+                      </div>
+                    </div>
+
+                  </div>
+
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label for="province">Province</label>
+                      <select class="form-control" name="province_name" id="province" (change)="province_change()" [formControl]="farmerForm.controls['province_name']"
+                        [(ngModel)]="province_name">
+                    <option value="">Select your province</option>
+                    <option *ngFor="let province of provinces" value="{{province}}" >{{ province}}</option>
+                  </select>
+                    </div>
+
+                    <div class="form-group">
+                      <label for="district">District</label>
+                      <select class="form-control" name="district" id="district" (change)="district_change()" [formControl]="farmerForm.controls['district']"
+                        [(ngModel)]="district_name">
+                    <option value="">Select district</option>
+                    <option *ngFor="let district of districts" value="{{district}}">{{ district}}</option>
+                  </select>
+                    </div>
+
+                    <div class="form-group">
+                      <label for="sector">Sector</label>
+                      <select class="form-control" name="sector" id="sector" [formControl]="farmerForm.controls['sector']" [(ngModel)]="sector_name">
+                    <option value="">Select sector</option>
+                    <option *ngFor="let sector of sectors" value="{{sector}}">{{ sector }}</option>
+                  </select>
+                    </div>
+
+                    <div class="form-group">
+                      <label for="gender">Gender</label>
+                      <select class="form-control" name="gender" id="gender" [formControl]="farmerForm.controls['gender']" [(ngModel)]="farmer.gender">
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>                    
+                  </select>
+                    </div>
+
+                    <div class="form-group" [ngClass]="{'has-error':!farmerForm.controls['age'].valid && farmerForm.controls['age'].touched}">
+                      <label for="age">Age</label>
+                      <input type="text" class="form-control" id="age" [formControl]="farmerForm.controls['age']" [(ngModel)]="farmer.age" name="age">
+                      <div *ngIf="farmerForm.controls['age'].hasError('required') && farmerForm.controls['age'].touched" class="alert alert-danger">You must include the age of this farmer.</div>
+                      <div *ngIf="farmerForm.controls['age'].hasError('maxlength') && farmerForm.controls['age'].touched" class="alert alert-danger">The length can't be more than 2.</div>
+                    </div>
+
+                    <div class="form-group">
+                      <label for="married">Married</label>
+                      <select class="form-control" name="married" [formControl]="farmerForm.controls['married']" [(ngModel)]="farmer.married" id="married">
+                    <option value="Yes">Yes</option>
+                    <option value="No">No</option>                    
+                  </select>
+                    </div>
+
+                  </div>
+
+                </form>
+              </div>
+              <!-- ALL THE FARMERS-->
+              <div class="x_content" *ngIf="!create_farmer && !update_farmer">
+                <table id="datatable-buttons" class="table table-striped table-bordered">
+                  <thead>
+                    <tr>
+                      <th>Name</th>
+                      <th>Recent deposit date</th>
+                      <th>Stock</th>
+                      <th>Action</th>
+                    </tr>
+                  </thead>
+
+
+                  <tbody>
+                    <tr *ngFor=" let farmer of farmers; let i= index; trackBy: trackByIndex">
+                      <td>{{ farmer.first_name }} {{ farmer.last_name }}</td>
+                      <td>{{ farmer.date_deposit | date:'mediumDate' }}</td>
+                      <td>
+                        <div *ngIf="!farmer.updating_stock">
+                          {{ farmer.stock }} Kg - <strong>{{ farmer.category }} {{ farmer.subcategory }}</strong>
+                        </div>
+                        <div *ngIf="farmer.updating_stock" class="row">
+                          <div class="col-md-8">
+                            <div class="form-group">
+                              <label for="category_name">Type</label>
+                              <select class="form-control" name="category_name" [(ngModel)]="category_name">
+                                  <option *ngFor="let category of categories" value="{{ category.name }}">{{ category.name }}</option>
+                              </select>
+                            </div>
+
+                            <div class="form-group">
+                              <label for="subcategory_name">Category</label>
+                              <select class="form-control" name="subcategory_name" [(ngModel)]="subcategory_name">
+                                  <option value="A">A</option>
+                                  <option value="B">B</option>
+                                  <option value="C">C</option>
+                                  <option value="D">D</option>
+                              </select>
+                            </div>
+
+                            <div class="form-group">
+                              <label for="stock"> Quantity (Kg)</label>
+                              <input class="form-control" type="text" [(ngModel)]="stock" name="stock">
+                            </div>
+                          </div>
+                          <div>
+                            <i class="fa fa-check" (click)="updateDone(i)"></i>
+                            <i class="fa fa-times text-danger" (click)="cancelUpdate(i)"></i>
+                          </div>
+
+                        </div>
+                      </td>
+                      <td>
+                        <i class="fa fa-trash text-danger" (click)="showPopup(i)"></i>
+                        <i class="fa fa-pencil-square-o text-primary" (click)="fbUpdateData(i)"></i>
+                        <i class="fa fa-plus text-success" (click)="updateStock(i)"></i>
+                      </td>
+                    </tr>
+
+
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- /page content -->
+  </div>
+
+  <!-- footer content -->
+  <app-footer></app-footer>
+  <!-- /footer content -->
+</div>

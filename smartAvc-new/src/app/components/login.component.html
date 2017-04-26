@@ -1,0 +1,35 @@
+<div class="container-fluid" style="padding-top:10%; max-width: 800px; min-width:568px;">
+    <!-- top navigation -->
+    <!-- page content -->
+    <div class="col-md-4"></div>
+
+    <div class="col-md-4">
+        <h3 align="center">Smart AVC | Login</h3>
+        <form #f='ngForm' (ngSubmit)="login(f)">
+            
+            <div class="form-group has-error" *ngIf="errorMessage">
+                <span>{{ errorMessage }}</span>
+            </div>
+            <div class="form-group">
+                <input type="text" name="email" id="email" [(ngModel)]="email" placeholder="Username" required class="form-control">
+            </div>
+
+            <div class="form-group">
+                <input type="password" name="password" [(ngModel)]="password" required id="pwd" placeholder="Password" class="form-control">
+            </div>
+
+            <button type="submit" id="signInBtn" class="btn btn-block btn-info">Login</button>
+            
+        </form>
+
+
+
+        <!--<p class="text-center pwdForgot"><a href="#">Forgot password?</a></p>
+        <p class="text-center login"><a class="myLoginBtn" routerLink="/subscribe">Subscribe</a></p>-->
+
+    </div>
+
+    <div class="col-md-4"></div>
+    <!-- /page content -->
+
+</div>
