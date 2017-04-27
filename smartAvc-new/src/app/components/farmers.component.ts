@@ -178,8 +178,7 @@ export class FarmersComponent implements OnInit {
         var uid = this.user.uid;
 
         firebase.database().ref('/subscribers/' + uid).on('value', (user) => {
-            this.user_collection_center = user.val().collection_center;
-
+            
             //check profile of the logged in user
             if (user.val().role == 'admin') {
                 firebase.database().ref('/farmers/')
@@ -189,6 +188,7 @@ export class FarmersComponent implements OnInit {
                         farmers_names.push(snapshot.val().first_name + ' ' + snapshot.val().last_name);
                     })
             } else {
+                this.user_collection_center = user.val().collection_center;
                 firebase.database().ref('/farmers/')
                     .orderByChild('collection_center')
                     .equalTo(user.val().collection_center)

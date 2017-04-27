@@ -7,8 +7,9 @@ import { SettingsComponent } from './components/settings.component';
 import { LoginComponent } from './components/login.component';
 import { StockComponent } from './components/stock.component';
 import { ProfileComponent } from './profile/profile.component';
-import { TransportersComponent } from './transporters/transporters.component'
-import { AuthGuard } from './shared/services/auth.guard'
+import { TransportersComponent } from './transporters/transporters.component';
+import { UsersComponent } from './users/users.component';
+import { AuthGuard } from './shared/services/auth.guard';
 export const routes: Routes = [
 
     {
@@ -75,6 +76,11 @@ export const routes: Routes = [
     {
         path: 'profile',
         component: ProfileComponent,
+        canActivate: [AuthGuard]
+    },
+    {
+        path: 'users',
+        component: UsersComponent,
         canActivate: [AuthGuard]
     }
 

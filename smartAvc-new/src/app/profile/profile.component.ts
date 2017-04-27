@@ -61,7 +61,8 @@ export class ProfileComponent implements OnInit {
    
     update(){
         firebase.database().ref('/subscribers/' + this.uid).update({
-            name: this.names
+            name: this.names,
+            username: this.username
         })
 
         this.updatePassword()

@@ -1,0 +1,124 @@
+<div class="container body">
+
+  <div class="main_container">
+
+    <app-side-menu></app-side-menu>
+
+    <div class="right_col" role="main">
+      <div class="">
+
+        <div class="row">
+          <div class="col-md-12 col-sm-12 col-xs-12">
+            <popup (confirmClick)="confirmDelete()">
+              The user will be deleted. Are you sure?
+            </popup>
+            <button class="btn btn-info btn-xs" *ngIf="!create_user && !update_user" (click)="create()"> <span class="fa fa-plus"></span> Add New User</button>
+            <button class="btn btn-warning btn-xs" *ngIf="create_user || update_user" (click)="cancelCreate()"> <span class="fa fa-times"></span> Cancel</button>
+
+            <div class="x_panel">
+              <!-- FROM FOR SAVING NEW user DETAILS-->
+              <div *ngIf="create_user || update_user">
+                <form [formGroup]="userForm" (ngSubmit)="fbPostData(userForm.value)">
+                  <div class="col-md-6">
+                    <div class="form-group" [ngClass]="{'has-error':!userForm.controls['first_name'].valid && userForm.controls['first_name'].touched}">
+                      <label for="first_name">Names</label>
+                      <input type="text" class="form-control" id="first_name" [formControl]="userForm.controls['first_name']" [(ngModel)]="user.name"
+                        name="first_name" placeholder="FirstName">
+                      <div *ngIf="userForm.controls['first_name'].hasError('required') && userForm.controls['first_name'].touched" class="alert alert-danger">You must include a first name.</div>
+                    </div>
+
+                    <div class="form-group" [ngClass]="{'has-error':!userForm.controls['last_name'].valid && userForm.controls['last_name'].touched}">
+                      <label for="last_name">Username</label>
+                      <input type="text" class="form-control" id="last_name" [formControl]="userForm.controls['last_name']" [(ngModel)]="user.username"
+                        name="last_name" placeholder="LastName">
+                      <div *ngIf="userForm.controls['last_name'].hasError('required') && userForm.controls['last_name'].touched" class="alert alert-danger">You must include a last name.</div>
+                    </div>
+
+                    
+
+                    <div class="form-group">
+                      <label for="user_collection_center">Collection Center</label>
+                      <select class="form-control" name="user_collection_center" [formControl]="userForm.controls['user_collection_center']" [(ngModel)]="user.collection_center">
+                        <option *ngFor="let col of collection_centers" value="{{ col.name }}"> {{ col.name }} </option>
+                      </select>
+                    </div>
+
+                    <div class="form-group">
+                      <label for="account">Account type</label>
+                      <select class="form-control" name="account" [formControl]="userForm.controls['account']" [(ngModel)]="user.role">
+                        <option value="coll_admin">Manager</option>
+                        <option value="supevisor">Supervisor</option>
+                      </select>
+                    </div>
+                    <div class="form-group">
+                      <label for="phone_Number_mtn">Phone number (MTN)</label>
+                      <input type="text" class="form-control" id="phone_Number_mtn" [formControl]="userForm.controls['phone_Number_mtn']" [(ngModel)]="user.phone_number_mtn"
+                        name="phone_Number_mtn" placeholder="078...">
+                    </div>
+
+                    <div class="row">
+                      <div class="form-group col-md-6">
+                        <button type="submit" class="btn btn-info btn-xs" [disabled]="!userForm.valid"> Done</button>
+                      </div>
+                    </div>
+
+                  </div>
+
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label for="gender">Gender</label>
+                      <select class="form-control" name="gender" id="gender" [formControl]="userForm.controls['gender']" [(ngModel)]="user.gender">
+                        <option value="Male">Male</option>
+                        <option value="Female">Female</option>                    
+                      </select>
+                    </div>
+
+                  </div>
+
+                </form>
+              </div>
+              <!-- ALL THE userS-->
+              <div class="x_content" *ngIf="!create_user && !update_user">
+                <table id="datatable-buttons" class="table table-striped table-bordered">
+                  <thead>
+                    <tr>
+                      <th>Name</th>
+                      <th>Collection Center</th>
+                      <th>Account Type</th>
+                      <th>Action</th>
+                    </tr>
+                  </thead>
+
+
+                  <tbody>
+                    <tr *ngFor=" let user of users; let i= index; trackBy: trackByIndex">
+                      <td>{{ user.name }}</td>
+
+                      <td>
+                        {{ user.collection_center}}
+                      </td>
+
+                      <td>{{user.role}}</td>
+                      <td>
+                        <i class="fa fa-trash text-danger" (click)="showPopup(i)"></i>
+                        <i class="fa fa-pencil-square-o text-primary" (click)="fbUpdateData(i)"></i>
+                        <!--<i class="fa fa-plus text-success" (click)="updateStock(i)"></i>-->
+                      </td>
+                    </tr>
+
+
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- /page content -->
+  </div>
+
+  <!-- footer content -->
+  <app-footer></app-footer>
+  <!-- /footer content -->
+</div>
