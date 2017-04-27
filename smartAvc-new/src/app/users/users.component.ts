@@ -91,9 +91,11 @@ export class UsersComponent implements OnInit {
     var uid = this.subscriber.uid;
     firebase.database().ref('/subscribers/')
       .on('child_added', (snapshot, prevChildKey) => {
-        users.push(snapshot.val());
-        users_keys.push(snapshot.key);
-        users_names.push(snapshot.val().first_name + ' ' + snapshot.val().last_name);
+        if (snapshot.val().role !== 'admin') {
+          users.push(snapshot.val());
+          users_keys.push(snapshot.key);
+          users_names.push(snapshot.val().first_name + ' ' + snapshot.val().last_name);
+        }
       })
     firebase.database().ref('/colls/')
       .on('child_added', (snapshot) => {
@@ -111,14 +113,14 @@ export class UsersComponent implements OnInit {
     var username = this.user.username;
     var collection_center = this.user.collection_center;
     var account_type = this.user.role;
-    var phone_number_mtn = this.user.phone_number_mtn;
+    var phone_number_mtn = this.user.phone_number;
     var gender = this.user.gender;
     if (this.create_user) {
       this.create_user = false;
       firebase.auth()
         .createUserWithEmailAndPassword(this.user.username + '@smartavc.com', 'password')
         .then((u) => {
-          firebase.database().ref('/subscribers/').push(
+          firebase.database().ref('/subscribers/' + u.uid).set(
             {
               name: name,
               username: username,
