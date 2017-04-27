@@ -59,15 +59,11 @@ export class TransportersComponent implements OnInit {
       'first_name': [null, Validators.required],
       'last_name': [null, Validators.required],
       'national_id': [null, Validators.compose([Validators.required, Validators.minLength(16), Validators.maxLength(16)])],
-      'phone_Number_mtn': "",
-      'phone_Number_airtel': "",
-      'phone_Number_tigo': "",
-      'district': "",
-      'province_name': "",
-      'sector': "",
+      'phone_number': "",
       'gender': "",
       'age': [null, Validators.compose([Validators.required, Validators.maxLength(2)])],
-      'married': ""
+      'vehicle_type': [null, Validators.required],
+      'plate_number': [null, Validators.required]
     })
   }
 
@@ -76,69 +72,6 @@ export class TransportersComponent implements OnInit {
     this.fbGetData();
     this.getCategories();
   }
-
-  province_change() {
-    console.log(this.province_name);
-    if (this.province_name == 'Kigali') {
-      this.districts = [
-        'Gasabo', 'Nyarugenge', 'Kicukiro'
-      ]
-    } else if (this.province_name == 'Northern Province') {
-      this.districts = [
-        'Burera', 'Gakenke', 'Gicumbi', 'Musanze', 'Rulindo', 'Nyabihu'
-      ]
-    } else if (this.province_name == 'Eastern Province') {
-      this.districts = [
-        'Bugesera', 'Gatsibo', 'Kayonza', 'Kirehe', 'Ngoma', 'Nyagatare', 'Rwamagana'
-      ]
-    } else if (this.province_name == 'Western Province') {
-      this.districts = [
-        'Gisagara', 'Huye', 'Kamonyi', 'Muhanga', 'Nyamagabe', 'Nyanza', 'Nyaruguru', 'Ruhango'
-      ]
-    } else {
-      this.districts = [];
-    }
-
-  }
-
-  district_change() {
-    if (this.district_name == 'Bugesera') {
-      this.sectors = [
-        'Gashora', 'Juru', 'Kamabuye', 'Ntarama', 'Mareba', 'Mayange', 'Musenyi',
-        'Mwogo', 'Ngeruka', 'Nyamata', 'Nyarugenge', 'Rilima', 'Ruhuha', 'Rweru', 'Shyara'
-      ]
-    } else if (this.district_name == 'Gatsibo') {
-      this.sectors = [
-        'Gasange', 'Gatsibo', 'Gitoki', 'Kaborore', 'Kageyo', 'Kiramuruzi', 'Kiziguro',
-        'Muhura', 'Murambi', 'Ngarama', 'Nyagihanga', 'Remera', 'Rugarama', 'Rwimbogo'
-      ]
-    } else if (this.district_name == 'Kayonza') {
-      this.sectors = [
-        'Gahini', 'Kabare', 'Kabarondo', 'Mukarange', 'Murama', 'Murundi', 'Mwiri', 'Ndego',
-        'Nyamirama', 'Rukara', 'Ruramira', 'Rwinkwavu'
-      ]
-    } else if (this.district_name == 'Burera') {
-      this.sectors = [
-        'Bungwe', 'Butaro', 'Cyanika', 'Cyeru', 'Gahunga', 'Gatebe', 'Gitovu', 'Kagogo', 'Kinoni',
-        'Kinyababa', 'Kivuye', 'Nemba', 'Rugarama', 'Rugendabari', 'Ruhunde', 'Rusarabuge', 'Rwerere'
-      ]
-    } else if (this.district_name == 'Gakenke') {
-      this.sectors = [
-        'Busengo', 'Coko', 'Cyabingo', 'Gakenke', 'Gashenyi', 'Mugunga', 'Janja', 'Kamubuga', 'Karambo',
-        'Kivuruga', 'Mataba', 'Minazi', 'Muhondo', 'Muyongwe', 'Muzo', 'Nemba', 'Ruli', 'Rusasa', 'Rushashi'
-      ]
-    } else if (this.district_name == 'Gicumbi') {
-      this.sectors = [
-        'Bukure', 'Bwisige', 'Byumba', 'Cyumba', 'Giti', 'Kaniga', 'Munyagiro', 'Miyove', 'Kageyo', 'Mukarange',
-        'Muko', 'Mutete', 'Nyamiyaga', 'Nyankenke', 'Rubaya', 'Rukomo', 'Rushaki', 'Rutare', 'Ruvune', 'Rwamiko',
-        'Shagasha'
-      ]
-    } else {
-      this.sectors = [];
-    }
-  }
-
-
 
   onSubmit() {
     this.create_transporter = false;
@@ -175,26 +108,12 @@ export class TransportersComponent implements OnInit {
     firebase.database().ref('/subscribers/' + uid).on('value', (user) => {
       this.user_collection_center = user.val().collection_center;
 
-      //check profile of the logged in user
-      if (user.val().role == 'admin') {
-        firebase.database().ref('/transporters/')
-          .on('child_added', (snapshot, prevChildKey) => {
-            transporters.push(snapshot.val());
-            transporters_keys.push(snapshot.key);
-            transporters_names.push(snapshot.val().first_name + ' ' + snapshot.val().last_name);
-          })
-      } else {
-        firebase.database().ref('/transporters/')
-          .orderByChild('collection_center')
-          .equalTo(user.val().collection_center)
-          .on('child_added', (snapshot, prevChildKey) => {
-            transporters.push(snapshot.val());
-            transporters_keys.push(snapshot.key);
-            transporters_names.push(snapshot.val().first_name + ' ' + snapshot.val().last_name);
-          })
-      }
-
-
+      firebase.database().ref('/transporters/')
+        .on('child_added', (snapshot, prevChildKey) => {
+          transporters.push(snapshot.val());
+          transporters_keys.push(snapshot.key);
+          transporters_names.push(snapshot.val().first_name + ' ' + snapshot.val().last_name);
+        })
 
       this.transporters = transporters;
       this.transporters_keys = transporters_keys;
@@ -213,16 +132,11 @@ export class TransportersComponent implements OnInit {
       var first_name = this.transporter.first_name
       var last_name = this.transporter.last_name
       var national_id = this.transporter.national_id
-      var province = this.province_name
-      var district = this.district_name
-      var sector = this.sector_name
-      var phone_number_mtn = this.transporter.phone_number_mtn
-      var phone_number_airtel = this.transporter.phone_number_airtel
-      var phone_number_tigo = this.transporter.phone_number_tigo
+      var phone_number = this.transporter.phone_number
       var gender = this.transporter.gender
       var age = this.transporter.age
-      var married = this.transporter.married
-      var transporter_id = this.transporters.length + 1
+      var vehicle_type = this.transporter.vehicle_type
+      var plate_number = this.transporter.plate_number
 
       this.user = firebase.auth().currentUser;
       var uid = this.user.uid;
@@ -234,19 +148,12 @@ export class TransportersComponent implements OnInit {
           {
             first_name: first_name,
             last_name: last_name,
-            collection_center: user.val().collection_center,
-            collection_center_id: user.val().coll_gen_id,
             national_id: national_id,
-            province: province,
-            district: district,
-            sector: sector,
-            phone_number_mtn: phone_number_mtn,
-            phone_number_airtel: phone_number_airtel,
-            phone_number_tigo: phone_number_tigo,
+            phone_number: phone_number,
             gender: gender,
             age: age,
-            married: married,
-            transporter_id: transporter_id
+            vehicle_type: vehicle_type,
+            plate_number: plate_number
           });
       })
     }
@@ -257,16 +164,11 @@ export class TransportersComponent implements OnInit {
           first_name: this.transporter.first_name,
           last_name: this.transporter.last_name,
           national_id: this.transporter.national_id,
-          province: this.province_name,
-          district: this.district_name,
-          sector: this.sector_name,
-          phone_number_mtn: this.transporter.phone_number_mtn,
-          phone_number_airtel: this.transporter.phone_number_airtel,
-          phone_number_tigo: this.transporter.phone_number_tigo,
+          phone_number: this.transporter.phone_number,
           gender: this.transporter.gender,
           age: this.transporter.age,
-          married: this.transporter.married,
-          transporter_id: this.transporters.length + 1,
+          vehicle_type: this.transporter.vehicle_type,
+          plate_number: this.transporter.plate_number
         }
       )
     }
@@ -320,9 +222,6 @@ export class TransportersComponent implements OnInit {
     this.update_transporter = true;
     this.transporter = this.transporters[id];
     this.transporter_id = id;
-    this.province_name = this.transporters[id].province;
-    this.province_change();
-    this.district_change();
   }
 
   updateStock(id) {
