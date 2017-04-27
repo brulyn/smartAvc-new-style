@@ -20,51 +20,39 @@
               <div *ngIf="create_user || update_user">
                 <form [formGroup]="userForm" (ngSubmit)="fbPostData(userForm.value)">
                   <div class="col-md-6">
-                    <div class="form-group" [ngClass]="{'has-error':!userForm.controls['first_name'].valid && userForm.controls['first_name'].touched}">
-                      <label for="first_name">Names</label>
-                      <input type="text" class="form-control" id="first_name" [formControl]="userForm.controls['first_name']" [(ngModel)]="user.name"
-                        name="first_name" placeholder="FirstName">
-                      <div *ngIf="userForm.controls['first_name'].hasError('required') && userForm.controls['first_name'].touched" class="alert alert-danger">You must include a first name.</div>
+                    <div class="form-group" [ngClass]="{'has-error':!userForm.controls['name'].valid && userForm.controls['name'].touched}">
+                      <label for="name">Names</label>
+                      <input type="text" class="form-control" id="name" [formControl]="userForm.controls['name']" [(ngModel)]="user.name"
+                        name="name">
+                      <div *ngIf="userForm.controls['name'].hasError('required') && userForm.controls['name'].touched" class="alert alert-danger">You must include a name.</div>
                     </div>
-
-                    <div class="form-group" [ngClass]="{'has-error':!userForm.controls['last_name'].valid && userForm.controls['last_name'].touched}">
-                      <label for="last_name">Username</label>
-                      <input type="text" class="form-control" id="last_name" [formControl]="userForm.controls['last_name']" [(ngModel)]="user.username"
-                        name="last_name" placeholder="LastName">
-                      <div *ngIf="userForm.controls['last_name'].hasError('required') && userForm.controls['last_name'].touched" class="alert alert-danger">You must include a last name.</div>
+                    <div class="form-group" [ngClass]="{'has-error':!userForm.controls['username'].valid && userForm.controls['username'].touched}">
+                      <label for="username">Username</label>
+                      <input type="text" class="form-control" id="username" [formControl]="userForm.controls['username']" [(ngModel)]="user.username"
+                        name="username">
+                      <div *ngIf="userForm.controls['username'].hasError('required') && userForm.controls['username'].touched" class="alert alert-danger">You must include a last name.</div>
                     </div>
-
-                    
-
                     <div class="form-group">
-                      <label for="user_collection_center">Collection Center</label>
-                      <select class="form-control" name="user_collection_center" [formControl]="userForm.controls['user_collection_center']" [(ngModel)]="user.collection_center">
+                      <label for="collection_center">Collection Center</label>
+                      <select class="form-control" name="collection_center" [formControl]="userForm.controls['collection_center']" [(ngModel)]="user.collection_center">
                         <option *ngFor="let col of collection_centers" value="{{ col.name }}"> {{ col.name }} </option>
                       </select>
                     </div>
-
+                  </div>
+                  <div class="col-md-6">
                     <div class="form-group">
-                      <label for="account">Account type</label>
-                      <select class="form-control" name="account" [formControl]="userForm.controls['account']" [(ngModel)]="user.role">
+                      <label for="role">Account type</label>
+                      <select class="form-control" name="role" [formControl]="userForm.controls['role']" [(ngModel)]="user.role">
                         <option value="coll_admin">Manager</option>
                         <option value="supevisor">Supervisor</option>
                       </select>
                     </div>
                     <div class="form-group">
-                      <label for="phone_Number">Phone number</label>
-                      <input type="text" class="form-control" id="phone_Number" [formControl]="userForm.controls['phone_Number_mtn']" [(ngModel)]="user.phone_number"
-                        name="phone_Number">
+                      <label for="phone_number">Phone number</label>
+                      <input type="text" class="form-control" id="phone_number" [formControl]="userForm.controls['phone_number']" [(ngModel)]="user.phone_number"
+                        name="phone_number">
                     </div>
 
-                    <div class="row">
-                      <div class="form-group col-md-6">
-                        <button type="submit" class="btn btn-info btn-xs" [disabled]="!userForm.valid"> Done</button>
-                      </div>
-                    </div>
-
-                  </div>
-
-                  <div class="col-md-6">
                     <div class="form-group">
                       <label for="gender">Gender</label>
                       <select class="form-control" name="gender" id="gender" [formControl]="userForm.controls['gender']" [(ngModel)]="user.gender">
@@ -72,9 +60,12 @@
                         <option value="Female">Female</option>                    
                       </select>
                     </div>
-
                   </div>
-
+                  <div class="row">
+                    <div class="form-group col-md-6">
+                      <button type="submit" class="btn btn-info btn-xs" [disabled]="!userForm.valid"> Done</button>
+                    </div>
+                  </div>
                 </form>
               </div>
               <!-- ALL THE userS-->
@@ -100,7 +91,7 @@
 
                       <td>{{user.role}}</td>
                       <td>
-                        <i class="fa fa-trash text-danger" (click)="showPopup(i)"></i>
+                        <!--<i class="fa fa-trash text-danger" (click)="showPopup(i)"></i>-->
                         <i class="fa fa-pencil-square-o text-primary" (click)="fbUpdateData(i)"></i>
                         <!--<i class="fa fa-plus text-success" (click)="updateStock(i)"></i>-->
                       </td>

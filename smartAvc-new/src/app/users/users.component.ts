@@ -43,13 +43,12 @@ export class UsersComponent implements OnInit {
 
   constructor(private auth: AuthService, fb: FormBuilder, public popup: Popup) {
     this.userForm = fb.group({
-      'first_name': [null, Validators.required],
-      'last_name': [null, Validators.required],
-      'user_collection_center': "",
-      'account': "",
-      'phone_Number_mtn': "",
-      'gender': "",
-      'married': ""
+      'name': [null, Validators.required],
+      'username': [null, Validators.required],
+      'collection_center': "",
+      'role': "",
+      'phone_number': "",
+      'gender': ""
     })
   }
 
@@ -94,7 +93,7 @@ export class UsersComponent implements OnInit {
         if (snapshot.val().role !== 'admin') {
           users.push(snapshot.val());
           users_keys.push(snapshot.key);
-          users_names.push(snapshot.val().first_name + ' ' + snapshot.val().last_name);
+          users_names.push(snapshot.val().name + ' ' + snapshot.val().username);
         }
       })
     firebase.database().ref('/colls/')
@@ -113,7 +112,7 @@ export class UsersComponent implements OnInit {
     var username = this.user.username;
     var collection_center = this.user.collection_center;
     var account_type = this.user.role;
-    var phone_number_mtn = this.user.phone_number;
+    var phone_number = this.user.phone_number;
     var gender = this.user.gender;
     if (this.create_user) {
       this.create_user = false;
@@ -126,7 +125,7 @@ export class UsersComponent implements OnInit {
               username: username,
               collection_center: collection_center,
               role: account_type,
-              phone_number_mtn: phone_number_mtn,
+              phone_number: phone_number  ,
               gender: gender
             });
         })
@@ -139,7 +138,7 @@ export class UsersComponent implements OnInit {
           username: username,
           collection_center: collection_center,
           role: account_type,
-          phone_number_mtn: phone_number_mtn,
+          phone_number_mtn: phone_number,
           gender: gender
         }
       )
