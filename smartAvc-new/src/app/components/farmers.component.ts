@@ -10,6 +10,7 @@ import { AuthService } from '../shared/services/auth.service'
 
 declare var firebase: any;
 
+
 @Component({
     selector: 'farmers-component',
     templateUrl: './farmers.component.html',
@@ -26,6 +27,7 @@ declare var firebase: any;
 })
 
 export class FarmersComponent implements OnInit {
+    dtOptions: any = {};
     loaded = false;
     user: any;
     admin = false;
@@ -79,7 +81,16 @@ export class FarmersComponent implements OnInit {
         this.getUserInfo();
         this.fbGetData();
         this.getCategories();
-        
+
+        this.dtOptions = {
+            
+            dom: 'Bfrtip',
+            // Configure the buttons
+            buttons: [
+                'print',
+                'excel'
+            ]
+        };
     }
 
     province_change() {
@@ -178,7 +189,7 @@ export class FarmersComponent implements OnInit {
         var uid = this.user.uid;
 
         firebase.database().ref('/subscribers/' + uid).on('value', (user) => {
-            
+
             //check profile of the logged in user
             if (user.val().role == 'admin') {
                 firebase.database().ref('/farmers/')
@@ -388,7 +399,7 @@ export class FarmersComponent implements OnInit {
 
         firebase.database().ref('/subscribers/' + uid).on('value', (user) => {
             this.user_collection_center = user.val().collection_center;
-            if(user.val().role == 'admin'){
+            if (user.val().role == 'admin') {
                 this.admin = true;
             }
 

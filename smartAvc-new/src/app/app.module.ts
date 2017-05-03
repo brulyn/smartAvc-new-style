@@ -1,6 +1,9 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { FormsModule, NgControl, ReactiveFormsModule } from '@angular/forms'
+import { FormsModule, NgControl, ReactiveFormsModule } from '@angular/forms';
+
+import { DataTablesModule } from 'angular-datatables';
+
 import { HttpModule } from '@angular/http';
 import {PopupModule} from 'ng2-opd-popup';
 
@@ -35,6 +38,7 @@ import { UsersComponent } from './users/users.component';
         routing,
         FormsModule,
         ReactiveFormsModule,
+        DataTablesModule,
         PopupModule.forRoot()
     ],
     declarations: [
