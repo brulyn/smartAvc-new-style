@@ -1,0 +1,68 @@
+<ion-header>
+  <ion-navbar no-border-bottom hideBackButton color="primary">
+    <ion-title>
+      {{ name }}
+    </ion-title>
+
+    <!--<ion-buttons start>
+      <button ion-button icon-only (click)="doFbLogout()">
+        <ion-icon name="log-out"></ion-icon>
+      </button>
+      
+    </ion-buttons>-->
+  </ion-navbar>
+  <ion-toolbar>
+    <ion-segment [(ngModel)]="mo">
+      <ion-segment-button value="now_showing">
+        Now showing
+      </ion-segment-button>
+      <ion-segment-button value="coming_soon">
+        Coming soon
+      </ion-segment-button>
+    </ion-segment>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content padding>
+  <div [ngSwitch]="mo">
+
+    <ion-list *ngSwitchCase="'now_showing'">
+
+      <ion-card *ngFor="let movie of showing" (click)="clicked(movie)">
+
+        <img src="{{ movie.image_url }}" style="max-width: 100%; height:auto">
+
+        <ion-card-content>
+          <ion-row>
+
+            <ion-card-title>
+              <a>{{ movie.name }}</a>
+            </ion-card-title>
+          </ion-row>
+
+          <!-- 
+            
+
+            <p>
+              {{ movie.description }}
+            </p>
+            <button ion-button small (click)="bookSeat()">View Details</button>
+            -->
+
+        </ion-card-content>
+      </ion-card>
+    </ion-list>
+
+    <ion-list *ngSwitchCase="'coming_soon'">
+      <ion-card *ngFor="let movie of soon" (click)="clicked(movie)">
+        <img src="{{ movie.image_url }}" />
+        <ion-card-content>
+          <ion-card-title>
+            {{ movie.name }}
+          </ion-card-title>
+        </ion-card-content>
+      </ion-card>
+    </ion-list>
+  </div>
+
+</ion-content>
